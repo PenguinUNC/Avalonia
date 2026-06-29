@@ -1,0 +1,59 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:AvaloniaApplication1"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+        Width="500" Height="600"
+        x:Class="AvaloniaApplication1.MainWindow"
+        Title="Список дел с фильтрацией"
+        Background="#F4F4F9">
+	<Grid RowDefinitions="Auto, Auto, Auto, *, Auto" Margin="20">
+		<StackPanel Grid.Row="0" Margin="0,0,0,15">
+			<TextBlock Text="Прогресс выполнения задач:" FontWeight="Bold" Margin="0,0,0,5"/>
+			<ProgressBar Name="TaskProgressBar" Minimum="0" Maximum="100" Height="20" ShowProgressText="True"/>
+		</StackPanel>
+		<Border Grid.Row="1" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,15">
+			<Grid ColumnDefinitions="*, Auto, Auto">
+				<TextBox Name="NewTaskText" Watermark="Введите название задачи..." VerticalAlignment="Center" Margin="0,0,10,0"/>
+				<ComboBox Grid.Column="1" Name="NewTaskCategoryCombo" VerticalAlignment="Center" Margin="0,0,10,0"/>
+				<Button Grid.Column="2" Content="Добавить" Click="OnAddTaskClick"/>
+			</Grid>
+		</Border>
+		<Border Grid.Row="2" Background="#EAEAEA" CornerRadius="5" Padding="10" Margin="0,0,0,15">
+			<Grid ColumnDefinitions="*, Auto">
+				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+					<RadioButton Name="RadioAll" Content="Все" IsChecked="True" IsCheckedChanged="OnRadioFilterChanged" Margin="0,0,15,0"/>
+					<RadioButton Name="RadioActive" Content="Активные" IsCheckedChanged="OnRadioFilterChanged" Margin="0,0,15,0"/>
+					<RadioButton Name="RadioCompleted" Content="Выполненные" IsCheckedChanged="OnRadioFilterChanged"/>
+				</StackPanel>
+				<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+					<TextBlock Text="Категория: " VerticalAlignment="Center" Margin="0,0,5,0"/>
+					<ComboBox Name="CategoryFilterCombo" SelectionChanged="OnFilterChanged" Width="120"/>
+				</StackPanel>
+			</Grid>
+		</Border>
+		<ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+			<ListBox Name="TaskControlList">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="local:TaskItem">
+						<Grid ColumnDefinitions="Auto, *, Auto" Margin="5">
+							<CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+							<StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+								<TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Medium"/>
+								<TextBlock Text="{Binding Category}" FontSize="12" Foreground="Gray"/>
+							</StackPanel>
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</ScrollViewer>
+		<Button Grid.Row="4" Content="Удалить выбранную задачу"
+                Click="OnDeleteTaskClick"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Margin="0,15,0,0"
+                Background="#E74C3C" Foreground="White"/>
+	</Grid>
+</Window>
